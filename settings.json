@@ -1,104 +1,73 @@
 {
   "env": {
-    "DISABLE_TELEMETRY": "1",
-    "DISABLE_ERROR_REPORTING": "1",
-    "DISABLE_BUG_COMMAND": "1",
-    "API_TIMEOUT_MS": "600000"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
     "allow": [
-      "Read(**)",
+      "Read",
       "Write(src/**)",
       "Write(docs/**)",
       "Write(.tmp/**)",
-      "Bash(git init:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push origin*:*)",
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(npm install:*)",
-      "Bash(pnpm install:*)",
-      "Bash(rm *)",
-      "Bash(ls:*)",
-      "Bash(cat **)",
-      "Bash(head:*)",
-      "Bash(tail:*)",
-      "Bash(pwd:*)",
-      "Bash(find:*)",
-      "Bash(tree:*)",
-      "Bash(mkdir:*)",
-      "Bash(pnpm run test:*)",
-      "Bash(pnpm run build:*)",
-      "Bash(mv:*)",
-      "Bash(gemini google_web_search:*)",
-      "Bash(docker compose up -d --build:*)",
-      "Bash(osascript -e:*)",
-      "mcp__context7__resolve-library-id",
-      "mcp__context7__get-library-docs",
-      "mcp__playwright__browser_snapshot",
-      "mcp__playwright__browser_click",
-      "mcp__playwright__browser_drag",
-      "mcp__playwright__browser_hover",
-      "mcp__playwright__browser_type",
-      "mcp__playwright__browser_select_option",
-      "mcp__playwright__browser_press_key",
-      "mcp__playwright__browser_wait_for",
-      "mcp__playwright__browser_file_upload",
-      "mcp__playwright__browser_handle_dialog",
-      "mcp__playwright__browser_navigate",
-      "mcp__playwright__browser_navigate_back",
-      "mcp__playwright__browser_navigate_forward",
-      "mcp__playwright__browser_take_screenshot",
-      "mcp__playwright__browser_pdf_save",
-      "mcp__playwright__browser_network_requests",
-      "mcp__playwright__browser_console_messages",
-      "mcp__playwright__browser_install",
-      "mcp__playwright__browser_close",
-      "mcp__playwright__browser_resize",
-      "mcp__playwright__browser_tab_list",
-      "mcp__playwright__browser_tab_new",
-      "mcp__playwright__browser_tab_select",
-      "mcp__playwright__browser_tab_close",
-      "mcp__playwright__browser_generate_playwright_test"
+      "Bash(git init *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git mv *)",
+      "Bash(npm install *)",
+      "Bash(pnpm install *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(pwd *)",
+      "Bash(find *)",
+      "Bash(tree *)",
+      "Bash(mkdir *)",
+      "Bash(pnpm run test *)",
+      "Bash(pnpm run build *)",
+      "Bash(mv *)",
+      "Bash(gemini google_web_search *)",
+      "Bash(docker compose up -d --build *)",
+      "Bash(osascript -e *)",
+      "mcp__context7__*",
+      "mcp__plugin_context7_context7__*",
+      "mcp__playwright__*"
     ],
     "deny": [
-      "Bash(sudo:*)",
-      "Bash(rm:*)",
-      "Bash(rm -rf:*)",
-      "Bash(git push:*)",
-      "Bash(git commit:*)",
-      "Bash(git reset:*)",
-      "Bash(git rebase:*)",
-      "Read(.env.*)",
+      "Bash(sudo *)",
+      "Bash(rm -rf *)",
       "Read(id_rsa)",
       "Read(id_ed25519)",
-      "Read(**/*token*)",
-      "Read(**/*key*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*private_key*)",
+      "Read(**/*private-key*)",
+      "Read(**/*secret_key*)",
+      "Read(**/*secret-key*)",
+      "Read(**/*api_key*)",
+      "Read(**/*api-key*)",
       "Write(.env*)",
       "Write(**/secrets/**)",
-      "Bash(curl:*)",
-      "Bash(wget:*)",
-      "Bash(nc:*)",
-      "Bash(npm uninstall:*)",
-      "Bash(npm remove:*)",
-      "Bash(psql:*)",
-      "Bash(mysql:*)",
-      "Bash(mongod:*)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(nc *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm remove *)",
+      "Bash(psql *)",
+      "Bash(mysql *)",
+      "Bash(mongod *)",
       "mcp__serena__create_text_file",
       "mcp__serena__delete_lines",
       "mcp__serena__execute_shell_command",
-      "mcp__serena__replace_lines"
+      "mcp__serena__replace_lines",
+      "Bash(*rails db:drop*)",
+      "Bash(*rake db:drop*)"
+    ],
+    "ask": [
+      "Bash(rm *)"
     ]
   },
-  "model": "sonnet",
   "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "github",
-    "context7",
-    "playwright"
-  ],
   "hooks": {
     "PostToolUse": [
       {
@@ -171,7 +140,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | jq -r '\"display notification \\\"\" + .message + \"\\\" with title \\\"\" + .title + \"\\\" sound name \\\"Glass\\\"\"' | xargs -I {} osascript -e '{}'"
+            "command": "terminal-notifier -title 'Claude Code' -message '作業が中断しました。' -sound default"
           }
         ]
       }
@@ -182,10 +151,61 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"作業が完了しました。\" with title \"Claude Code\" sound name \"Glass\"'"
+            "command": "terminal-notifier -title 'Claude Code' -message '作業が完了しました。' -sound Glass"
           }
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "cat | bash ~/.claude/statusline.sh"
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "slack@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "codex@openai-codex": true
+  },
+  "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    }
+  },
+  "sandbox": {
+    "enabled": false,
+    "autoAllowBashIfSandboxed": true,
+    "allowUnsandboxedCommands": true,
+    "excludedCommands": [
+      "docker",
+      "docker-compose",
+      "just",
+      "make",
+      "git",
+      "gh",
+      "aws",
+      "aws2-wrap",
+      "curl",
+      "psql",
+      "hb",
+      "codex",
+      "brew",
+      "terraform",
+      "open",
+      "terminal-notifier",
+      "dig",
+      "lsof",
+      "ssh",
+      "session-manager-plugin"
+    ]
+  },
+  "effortLevel": "medium",
+  "autoUpdatesChannel": "latest",
+  "plansDirectory": "./plans",
+  "skipDangerousModePermissionPrompt": true
 }
